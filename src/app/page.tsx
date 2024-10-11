@@ -1,22 +1,32 @@
 "use client";
+
 import { useState } from "react";
 import { toPng } from "html-to-image";
 import {
-  BatteryMedium,
-  CircleHelp,
-  Mail,
-  MoveLeft,
+  ArrowLeft,
+  Battery,
+  Check,
+  Copy,
+  HelpCircle,
+  Share2,
   Wifi,
-  WifiHigh,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { cn } from "@/lib/utils";
 
-const Home = () => {
-  const [amount, setAmount] = useState<string>("");
-  const [senderName, setSenderName] = useState<string>("");
-  const [date, setDate] = useState<string>("");
-  const [transactionId, setTransactionId] = useState<string>("");
-  const [time, setTime] = useState<string>("");
-  const [contactNumber, setContactNumber] = useState<string>("");
+export default function Component() {
+  const [paymentApp, setPaymentApp] = useState("phonepe");
+  const [amount, setAmount] = useState("500");
+  const [recipientName, setRecipientName] = useState("RAMESH NAYAK MUDAVAT");
+  const [recipientNumber, setRecipientNumber] = useState("9381978288");
+  const [date, setDate] = useState("20 May 2023");
+  const [time, setTime] = useState("10:58 AM");
+  const [transactionId, setTransactionId] = useState(
+    "T23052010583667546287773"
+  );
 
   const handleDownload = () => {
     const node = document.getElementById("screenshot-preview");
@@ -25,7 +35,7 @@ const Home = () => {
         .then((dataUrl) => {
           const link = document.createElement("a");
           link.href = dataUrl;
-          link.download = "phonepe-fake-screenshot.png";
+          link.download = `${paymentApp}-screenshot.png`;
           link.click();
         })
         .catch((error) => {
@@ -35,185 +45,287 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="p-4 bg-white rounded-lg shadow-md max-w-sm w-full">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Amount
-          </label>
-          <input
-            type="text"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter amount"
-          />
+    <div className="flex flex-col md:flex-row items-start justify-center min-h-screen bg-gray-100 p-4 gap-8">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-2xl font-bold mb-6">
+          Payment App Screenshot Generator
+        </h2>
+        <div className="space-y-4">
+          <RadioGroup defaultValue="phonepe" onValueChange={setPaymentApp}>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="phonepe" id="phonepe" />
+              <Label htmlFor="phonepe">PhonePe</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="gpay" id="gpay" />
+              <Label htmlFor="gpay">Google Pay</Label>
+            </div>
+          </RadioGroup>
+          <div>
+            <Label htmlFor="amount">Amount</Label>
+            <Input
+              id="amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Enter amount"
+            />
+          </div>
+          <div>
+            <Label htmlFor="recipientName">Recipient Name</Label>
+            <Input
+              id="recipientName"
+              value={recipientName}
+              onChange={(e) => setRecipientName(e.target.value)}
+              placeholder="Enter recipient name"
+            />
+          </div>
+          <div>
+            <Label htmlFor="recipientNumber">Recipient Number</Label>
+            <Input
+              id="recipientNumber"
+              value={recipientNumber}
+              onChange={(e) => setRecipientNumber(e.target.value)}
+              placeholder="Enter recipient number"
+            />
+          </div>
+          <div>
+            <Label htmlFor="date">Date</Label>
+            <Input
+              id="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              placeholder="Enter date"
+            />
+          </div>
+          <div>
+            <Label htmlFor="time">Time</Label>
+            <Input
+              id="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              placeholder="Enter time"
+            />
+          </div>
+          <div>
+            <Label htmlFor="transactionId">Transaction ID</Label>
+            <Input
+              id="transactionId"
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
+              placeholder="Enter transaction ID"
+            />
+          </div>
+          <Button className="w-full" onClick={handleDownload}>
+            Download Screenshot
+          </Button>
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Sender Name
-          </label>
-          <input
-            type="text"
-            value={senderName}
-            onChange={(e) => setSenderName(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter sender name"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Date
-          </label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter date"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Time
-          </label>
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter time"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Contact Number
-          </label>
-          <input
-            type="text"
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter contact number"
-          />
-        </div>
-
-        <button
-          onClick={handleDownload}
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
-        >
-          Download Screenshot
-        </button>
       </div>
 
       <div
         id="screenshot-preview"
-        className="mt-10 p-4 bg-white rounded-lg shadow-lg w-full max-w-xs"
+        className={cn(
+          "w-full max-w-[320px] bg-white rounded-xl shadow-lg overflow-hidden",
+          paymentApp === "gpay" && "bg-blue-50"
+        )}
       >
-        <div className="flex items-center justify-between bg-green-500 p-2 text-white">
-          <div className="flex items-center space-x-2">
-            <span className="text-xs">0 KB/s</span>
-            <Mail size={18} />
-          </div>
-          <div className="flex items-center justify-end space-x-2">
-            <Wifi size={18} />
-            <BatteryMedium size={18} />
-            <span className="text-xs">{time || "16:03"}</span>
-          </div>
-        </div>
-
-        <div className=" bg-lime-600  px-4 py-2">
-          <div className=" justify-start items-center gap-[49px] inline-flex">
-            <div className="">
-              <MoveLeft color="white" />
-            </div>
-            <div className="items-start text-start ">
-              <div className=" text-center text-white  font-normal font-['Bree Serif'] tracking-tight">
-                Transaction Successful
+        {paymentApp === "phonepe" ? (
+          <>
+            <div className="bg-green-600 text-white p-4">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center space-x-1">
+                  <span className="text-xs">Airtel</span>
+                  <Wifi className="w-4 h-4" />
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Battery className="w-4 h-4" />
+                  <span className="text-xs">100%</span>
+                  <span className="text-xs">{time}</span>
+                </div>
               </div>
-              <div className=" text-wrap text-stone-50/80 text-[10px] font-normal font-['Bree Serif'] tracking-tight">
-                {date ? (
-                  <div className="">{date}</div>
-                ) : (
-                  "04:02 PM on 25 Jul 2019"
-                )}
+              <div className="flex items-center mb-4">
+                <ArrowLeft className="w-6 h-6 mr-4" />
+                <div>
+                  <h2 className="font-semibold text-lg">
+                    Transaction Successful
+                  </h2>
+                  <p className="text-sm opacity-80">
+                    {date} at {time}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        {/* Transaction ID */}
-        <div className="px-4 py-3 border-b-4  ">
-          <div className="text-gray-500 text-sm font-medium text-[10px]">
-            Transaction ID
-          </div>
-          <div className="text-gray-800 text-base font-medium flex justify-between items-center">
-            <span className="text-[10px]">
-              {transactionId || "P1907251602426300583231"}
-            </span>
-            <span className="text-blue-600 text-xs font-medium cursor-pointer text-[10px]">
-              COPY
-            </span>
-          </div>
-        </div>
-
-        {/* Paid To Section */}
-        <div className="px-4 py-3 border-b-4">
-          <div className="font-bold text-[12px] pb-6">Paid to</div>
-          <div className="flex items-center mb-2">
-            <div className="w-8 h-8  rounded-full flex items-center justify-center">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTovIQy7Sqh32fhLLF9N9_uRE4ZgnwQ4FMu2w&s"
-                alt=""
-              />
+            <div className="p-4 space-y-4">
+              <div>
+                <p className="text-sm text-gray-500">Transaction ID</p>
+                <div className="flex justify-between items-center">
+                  <p className="text-sm font-medium">{transactionId}</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-purple-600 p-0"
+                  >
+                    <Copy className="w-4 h-4 mr-1" />
+                    COPY
+                  </Button>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-semibold mb-2">Paid to</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-purple-600 font-semibold text-lg">
+                        {recipientName.charAt(0)}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-semibold">{recipientName}</p>
+                      <p className="text-sm text-gray-500">{recipientNumber}</p>
+                    </div>
+                  </div>
+                  <p className="font-semibold">₹{amount}</p>
+                </div>
+                <div className="flex justify-end space-x-4 mt-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-purple-600 p-0"
+                  >
+                    SEND AGAIN
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-purple-600 p-0"
+                  >
+                    <Share2 className="w-4 h-4 mr-1" />
+                    SHARE
+                  </Button>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm font-semibold mb-2">Debited from</p>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-white font-semibold text-lg">
+                        HD
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-semibold">XXXXXXXX8289</p>
+                      <p className="text-xs text-gray-500">UTR: 350679646058</p>
+                    </div>
+                  </div>
+                  <p className="font-semibold">₹{amount}</p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start text-purple-600"
+              >
+                <HelpCircle className="w-4 h-4 mr-2" />
+                Contact PhonePe Support
+              </Button>
             </div>
-            <div className="ml-4">
-              <div className="text-gray-800 font-medium">{senderName}</div>
-              <div className="text-gray-500 text-sm">
-                {contactNumber || "7052219319"}
+            <div className="bg-purple-100 p-4">
+              <p className="text-sm text-purple-600">
+                Bike insurance from ₹ 1.5/day*
+              </p>
+            </div>
+            <div className="bg-gray-100 p-2 text-center">
+              <p className="text-xs text-gray-500">Powered by UPI</p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="bg-blue-600 text-white p-4">
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center space-x-1">
+                  <span className="text-xs">Airtel</span>
+                  <Wifi className="w-4 h-4" />
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Battery className="w-4 h-4" />
+                  <span className="text-xs">100%</span>
+                  <span className="text-xs">{time}</span>
+                </div>
+              </div>
+              <div className="flex items-center mb-4">
+                <ArrowLeft className="w-6 h-6 mr-4" />
+                <div>
+                  <h2 className="font-semibold text-lg">Payment successful</h2>
+                </div>
               </div>
             </div>
-            <div className="ml-auto text-gray-800 font-medium">{`₹${amount}`}</div>
-          </div>
-          <div className="flex text-blue-600 text-end  justify-end text-[10px] space-x-4">
-            <span className="cursor-pointer">SEND AGAIN</span>
-            <span className="cursor-pointer">SHARE</span>
-            <span className="cursor-pointer">SAVE CONTACT</span>
-          </div>
-        </div>
-
-        {/* Debited From Section */}
-        <div className="px-4 py-3 border-b">
-          <div className="">
-            <div className="text-gray-800 font-medium">Debited from</div>
-          </div>
-          <div className="flex items-center mb-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT95S5JToI-Nm_IMDq788tORA0j15OTgRiPwQ&s"
-                alt=""
-              />
+            <div className="p-4 space-y-4">
+              <div className="flex justify-center">
+                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                  <Check className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold">₹{amount}</p>
+                <p className="text-gray-600">Paid to {recipientName}</p>
+              </div>
+              <div className="bg-white rounded-lg p-4 shadow-sm">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-gray-600">UPI transaction ID</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-blue-600 p-0"
+                  >
+                    <Copy className="w-4 h-4 mr-1" />
+                    COPY
+                  </Button>
+                </div>
+                <p className="text-sm">{transactionId}</p>
+              </div>
+              <div className="bg-white rounded-lg p-4 shadow-sm">
+                <p className="text-gray-600 mb-2">Paid from</p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-gray-600 font-semibold text-lg">
+                      HD
+                    </span>
+                  </div>
+                  <div>
+                    <p className="font-semibold">HDFC Bank ••• 8289</p>
+                    <p className="text-xs text-gray-500">Savings Account</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-center space-x-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-blue-600 border-blue-600"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-blue-600 border-blue-600"
+                >
+                  <HelpCircle className="w-4 h-4 mr-2" />
+                  Get help
+                </Button>
+              </div>
             </div>
-            <div className="ml-4 space-y-4">
-              <div className="text-gray-500 text-sm">******5246</div>
-              <div className="text-gray-500 text-xs">UTR: 920648123127</div>
+            <div className="bg-white p-4 text-center">
+              <p className="text-xs text-gray-500">
+                Google Pay: secure payments by Google
+                <br />
+                All transactions are protected by SSL encryption
+              </p>
             </div>
-            <div className="ml-auto text-gray-800 font-medium">{`₹${amount}`}</div>
-          </div>
-        </div>
-
-        {/* Contact Support Section */}
-        <div className="px-4 py-3">
-          <div className="text-gray-800 font-medium flex items-center gap-2">
-            <div className="">
-              <CircleHelp />
-            </div>
-            Contact PhonePe Support
-          </div>
-          <div className="bg-slate-200 h-40 mt-2"></div>
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
-};
-
-export default Home;
+}
